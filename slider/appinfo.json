@@ -1,0 +1,11 @@
+{
+  "id": "com.needhost.myslider",
+  "version": "1.0.0",
+  "vendor": "Ivan Safronov",
+  "type": "web",
+  "main": "index.html",
+  "title": "slider",
+  "icon": "images/icon.png",
+  "largeIcon": "images/largeIcon.png",
+  "resolution": "1920x1080"
+}
