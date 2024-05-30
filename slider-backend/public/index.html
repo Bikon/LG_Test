@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider Backend</title>
+</head>
+<body>
+<h1>Upload New Image</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required>
+    <button type="submit">Upload</button>
+</form>
+<h1>Uploaded Images</h1>
+<div id="images"></div>
+<button id="clearButton">Clear All Images</button>
+
+<script>
+    const uploadForm = document.getElementById('uploadForm');
+    const imagesDiv = document.getElementById('images');
+    const clearButton = document.getElementById('clearButton');
+
+    uploadForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(uploadForm);
+        const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            loadImages();
+        } else {
+            alert('Ошибка при загрузке изображения');
+        }
+    });
+
+    clearButton.addEventListener('click', async () => {
+        const response = await fetch('/images', {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            loadImages();
+        } else {
+            alert('Ошибка при удалении изображений');
+        }
+    });
+
+    async function loadImages() {
+        const response = await fetch('/images');
+        const images = await response.json();
+        imagesDiv.innerHTML = images.map(src => `<img src="uploads/${src}" width="200">`).join('');
+    }
+
+    loadImages();
+</script>
+</body>
+</html>
